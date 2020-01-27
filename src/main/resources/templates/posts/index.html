@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+   <meta charset="UTF-8">
+   <title>Index</title>
+</head>
+<body>
+   <div>
+      <h1>Here are all of the posts</h1>
+      <div th:each="item : ${array}">
+         <h3>title: <span th:text="${item.title}"></span></h3>
+         <h3>body: <span th:text="${item.body}"></span></h3>
+      </div>
+   </div>
+</body>
+</html>

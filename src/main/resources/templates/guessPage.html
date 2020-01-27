@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-   <meta charset="UTF-8">
-   <title>Guess Page</title>
-</head>
+<head th:include="partials/header :: header"/>
 <body>
-
+<nav th:include="partials/nav :: nav"/>
 <div th:if="${guess != null}">
    <h1>You chose: <span th:text="${guess}">A number</span></h1>
    <h2>Random number: <span th:text="${random}">A random number</span></h2>
@@ -17,5 +14,5 @@
       <h1>YOU WERE WRONG</h1>
    </span>
 </div>
+<footer th:include="partials/footer:: footer"/>
 </body>
-</html>

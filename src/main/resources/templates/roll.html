@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-   <meta charset="UTF-8">
-   <title>Roll</title>
-</head>
+<head th:include="partials/header :: header"/>
 <body>
+<nav th:include="partials/nav :: nav"/>
 <form method="POST" action="/roll-dice">
    <button type="submit" value="1" name="guess">1</button>
 </form>
@@ -23,6 +21,6 @@
 <form method="POST" action="/roll-dice">
    <button type="submit" value="6" name="guess">6</button>
 </form>
-
+<footer th:include="partials/footer :: footer"/>
 </body>
 </html>
