@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+   <title>Title</title>
+</head>
+<body>
+   <h4>There are <span th:text="${days}">Days</span> days remaining</h4>
+   <form method="POST" action="/deimos">
+      <label for="days-id">How many days remain?!</label>
+      <input type="text" name="days" id="days-id">
+      <button type="submit">SUBMIT</button>
+   </form>
+
+</body>
+</html>
