@@ -32,6 +32,24 @@ public class PostController {
         return "posts/update";
     }
 
+    @GetMapping("/posts/delete")
+    public String deletePost(@RequestParam String postTitle,
+                             @RequestParam String postBody,
+                             @RequestParam Long postId,
+                             Model model) {
+        model.addAttribute("postTitle", postTitle);
+        model.addAttribute("postBody", postBody);
+        model.addAttribute("postId", postId);
+        Post post = new Post(postTitle, postBody, postId);
+        postDao.delete(post);
+        return "redirect:/posts";
+    }
+
+
+
+
+
+
     //handles what to do when update form sends data to posts/update
     @PostMapping("/posts/update")
     //takes in the parameters
