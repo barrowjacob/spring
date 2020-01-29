@@ -6,6 +6,13 @@ import javax.persistence.*;
 @Table(name="posts")
 public class Post {
 
+    @OneToOne(mappedBy="post")
+    private PostDetails postDetails;
+//
+//    @ManyToOne
+//    @JoinColumn(name="user_id", nullable=false)
+//    private User user;
+
     @Column(nullable=false)
     private String title;
     @Column(nullable=false, columnDefinition = "TEXT")
@@ -14,6 +21,10 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable=false, columnDefinition = "INT(11) UNSIGNED")
     private Long id;
+
+    public PostDetails getPostDetails() {
+        return postDetails;
+    }
 
     public Post() {
 

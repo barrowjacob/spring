@@ -1,6 +1,6 @@
 
 USE springblog_db;
-INSERT INTO dog (age, name, reside_state)
+INSERT INTO dogs (age, name, reside_state)
 VALUES
 (2, 'Chuck', 'TX'),
 (5, 'Fred', 'OH'),

@@ -45,11 +45,6 @@ public class PostController {
         return "redirect:/posts";
     }
 
-
-
-
-
-
     //handles what to do when update form sends data to posts/update
     @PostMapping("/posts/update")
     //takes in the parameters
@@ -87,6 +82,13 @@ public class PostController {
         this.postDao = postDao;
     }
 
-//  f
+
+    @GetMapping("/newtest")
+    @ResponseBody
+    public String returnDetails() {
+        Post post = postDao.getOne(1L);
+        return post.getPostDetails().getHistoryOfPost();
+    }
+
 
 }
