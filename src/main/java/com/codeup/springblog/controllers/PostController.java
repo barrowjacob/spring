@@ -1,11 +1,10 @@
 package com.codeup.springblog.controllers;
 
+import com.codeup.springblog.Models.Post;
+import com.codeup.springblog.Models.postRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -13,26 +12,43 @@ import java.util.ArrayList;
 public class PostController {
     @GetMapping("/posts")
     public String posts(Model model) {
-        Post one = new Post("one", "one");
-        Post two = new Post("two", "two");
-        Post three = new Post("three", "three");
-        Post four = new Post("four", "four");
-        ArrayList<Post> array = new ArrayList<>();
-        array.add(one);
-        array.add(two);
-        array.add(three);
-        array.add(four);
-        model.addAttribute("array",array);
+       model.addAttribute("posts", postDao.findAll());
         return "posts/index";
     }
 
-    @GetMapping(path = "/posts/show")
-        public String post(Model model) {
-        Post post = new Post("title","body");
-        model.addAttribute("post",post);
-        return "posts/show";
+//    @GetMapping(path = "/posts/show")
+//        public String post(Model model) {
+//        return "posts/show";
+//    }
+
+    @GetMapping(path = "/posts/update")
+    public String sendPostToUpdateForm(@RequestParam String postTitle,
+                          @RequestParam String postBody,
+                          @RequestParam Long postId,
+                          Model model) {
+        model.addAttribute("postTitle",postTitle);
+        model.addAttribute("postBody", postBody);
+        model.addAttribute("postId", postId);
+        return "posts/update";
     }
 
+    //handles what to do when update form sends data to posts/update
+    @PostMapping("/posts/update")
+    //takes in the parameters
+    public String returnUpdatedPost(@RequestParam String postTitle,
+                          @RequestParam String postBody,
+                          @RequestParam Long postId,
+                          Model model) {
+        model.addAttribute("postTitle", postTitle);
+        model.addAttribute("postBody", postBody);
+        model.addAttribute("postId", postId);
+        //creates new Post object with updated attributes (same ID)!
+        Post newPost = new Post(postTitle, postBody, postId);
+        //save takes them and overwrites them based on ID
+        postDao.save(newPost);
+//        make sure there's no space between ':' and '/'
+        return "redirect:/posts";
+    }
 
 
     @GetMapping("/posts/create")
@@ -43,8 +59,16 @@ public class PostController {
 
 
     @PostMapping("/posts")
-
     public String creates() {
         return "create a new post";
     }
+
+    private final postRepository postDao;
+
+    public PostController(postRepository postDao) {
+        this.postDao = postDao;
+    }
+
+//  f
+
 }
