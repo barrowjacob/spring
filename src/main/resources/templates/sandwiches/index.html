@@ -7,7 +7,11 @@
 <body>
 <div>
    <h1>SANDWICHES!!!</h1>
-   <span th:text="${historyOfSandwich}"></span>
+   <div th:each="item : ${allSandwiches}">
+      <h3>name: <span th:text="${item.sandwichName}"></span></h3>
+      <h3>owned by: <span th:text="${item.whoOwnsTheSandwich}"></span></h3>
+      <h3>history: <span th:text="${item.historyOfSandwich}"></span></h3>
+   </div>
 </div>
 </body>
 </html>

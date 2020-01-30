@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,7 +26,11 @@ public class SandwichController {
         Sandwich sandy = sandDao.getOne(1L);
         model.addAttribute("sandy",sandy);
         model.addAttribute("historyOfSandwich", sandy.getSandwichDetails().getHistoryOfSandwich());
-//        model.addAttribute("")
+        model.addAttribute("allSandwiches", sandDao.findAll());
+            List<Sandwich> allSandwichDetails = sandDao.findAll();
+//        for (int i =0; i < sandDao.findAll().size(); i++) {
+//            allSandwichDetails.get(i).getSandwichDetails();
+//        }
         return "sandwiches/index";
     }
 }
