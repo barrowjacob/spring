@@ -1,12 +1,12 @@
 package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.Models.Post;
-import com.codeup.springblog.Models.postRepository;
+import com.codeup.springblog.Models.User;
+import com.codeup.springblog.Repositories.postRepository;
+import com.codeup.springblog.Repositories.userRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @Controller
 public class PostController {
@@ -16,63 +16,41 @@ public class PostController {
         return "posts/index";
     }
 
-//    @GetMapping(path = "/posts/show")
-//        public String post(Model model) {
-//        return "posts/show";
-//    }
 
-    @GetMapping(path = "/posts/update")
-    public String sendPostToUpdateForm(@RequestParam String postTitle,
-                          @RequestParam String postBody,
-                          @RequestParam Long postId,
-                          Model model) {
-        model.addAttribute("postTitle",postTitle);
-        model.addAttribute("postBody", postBody);
-        model.addAttribute("postId", postId);
-        return "posts/update";
-    }
 
-    @GetMapping("/posts/delete")
-    public String deletePost(@RequestParam String postTitle,
-                             @RequestParam String postBody,
-                             @RequestParam Long postId,
-                             Model model) {
-        model.addAttribute("postTitle", postTitle);
-        model.addAttribute("postBody", postBody);
-        model.addAttribute("postId", postId);
-        Post post = new Post(postTitle, postBody, postId);
-        postDao.delete(post);
+    @GetMapping("/posts/{id}/delete")
+    public String deletePost(@PathVariable long id) {
+        postDao.deleteById(id);
         return "redirect:/posts";
     }
 
 
-
-
-
-
-    //handles what to do when update form sends data to posts/update
-    @PostMapping("/posts/update")
-    //takes in the parameters
-    public String returnUpdatedPost(@RequestParam String postTitle,
-                          @RequestParam String postBody,
-                          @RequestParam Long postId,
+    @GetMapping(path = "/posts/{id}/update")
+    public String sendPostToUpdateForm(@PathVariable Long id,
                           Model model) {
-        model.addAttribute("postTitle", postTitle);
-        model.addAttribute("postBody", postBody);
-        model.addAttribute("postId", postId);
-        //creates new Post object with updated attributes (same ID)!
-        Post newPost = new Post(postTitle, postBody, postId);
-        //save takes them and overwrites them based on ID
-        postDao.save(newPost);
-//        make sure there's no space between ':' and '/'
+        model.addAttribute("post",postDao.getOne(id));
+        return "posts/update";
+    }
+    @PostMapping("/posts/{id}/update")
+    public String returnUpdatedPost(@ModelAttribute Post post) {
+        postDao.save(post);
         return "redirect:/posts";
     }
 
 
     @GetMapping("/posts/create")
-    @ResponseBody
-    public String create() {
-        return "view the form for creating a post";
+    public String create(Model model) {
+        model.addAttribute("post", new Post());
+        return "posts/create";
+    }
+
+    @PostMapping("/posts/create")
+    public String create(@ModelAttribute Post post) {
+        System.out.println(post.getTitle());
+        System.out.println(post.getBody());
+        post.setUsers(userDao.getOne(1L));
+        postDao.save(post);
+        return "redirect:/posts";
     }
 
 
@@ -82,11 +60,31 @@ public class PostController {
     }
 
     private final postRepository postDao;
+    private final userRepository userDao;
 
-    public PostController(postRepository postDao) {
+    public PostController(postRepository postDao, userRepository userDao) {
         this.postDao = postDao;
+        this.userDao = userDao;
+    }
+    @GetMapping("/posts/{id}")
+    public String viewPost(@PathVariable long id, Model model) {
+        model.addAttribute("post", postDao.getOne(id));
+        return "posts/show";
     }
 
-//  f
+
+
+    @GetMapping("/newtest")
+    @ResponseBody
+    public String returnDetails() {
+        Post post = postDao.getOne(1L);
+        return post.getPostDetails().getHistoryOfPost();
+    }
+
+    @GetMapping("/images")
+    public String postImages(Model model) {
+        model.addAttribute("posts", postDao.getOne(1L).getImage());
+        return "cats/index";
+    }
 
 }

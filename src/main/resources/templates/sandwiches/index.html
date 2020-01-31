@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+   <meta charset="UTF-8">
+   <title>Home Page</title>
+</head>
+<body>
+<div>
+   <h1>SANDWICHES!!!</h1>
+   <div th:each="item : ${allSandwiches}">
+      <h3>name: <span th:text="${item.sandwichName}"></span></h3>
+      <h3>History: <span th:text="${item.sandwichDetails.historyOfSandwich}"></span></h3>
+<!--      <h3>history: <span th:text="${item.historyOfSandwich}"></span></h3>-->
+   </div>
+</div>
+</body>
+</html>

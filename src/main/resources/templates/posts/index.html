@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
    <meta charset="UTF-8">
    <title>Index</title>
@@ -11,20 +11,14 @@
          <h3>title: <span th:text="${item.title}"></span></h3>
          <h3>body: <span th:text="${item.body}"></span></h3>
          <h3>id: <span th:text = "${item.id}"></span></h3>
-         <form method="GET" action="/posts/update">
-            <input type="hidden" name="postTitle" th:value="${item.getTitle()}">
-            <input type="hidden" name="postBody" th:value="${item.getBody()}">
-            <input type="hidden" name="postId" th:value="${item.getId()}">
-<!--            this is original-->
-            <button type="submit" name="id" th:value="${item.id}">SUBMIT</button>
+         <form th:method="GET" th:action="@{|/posts/${item.id}/update|}" th:object="${item}">
+            <button type="submit" name="id">EDIT</button>
          </form>
-         <form method="GET" action="/posts/delete">
-            <input type="hidden" name="postTitle" th:value="${item.getTitle()}">
-            <input type="hidden" name="postBody" th:value="${item.getBody()}">
-            <input type="hidden" name="postId" th:value="${item.getId()}">
+         <form th:method="GET" th:action="@{|/posts/${item.id}/delete|}" th:object="${item}">
             <button type="submit">DELETE</button>
          </form>
       </div>
    </div>
+         <a th:href="@{/posts/create}">Create a post</a>
 </body>
 </html>

@@ -1,27 +1,47 @@
 package com.codeup.springblog.Models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="posts")
 public class Post {
 
+    @OneToOne(mappedBy="post")
+    private PostDetails postDetails;
+
+    @OneToMany(mappedBy="post")
+    private List<PostImage> images;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User users;
+
+
+
+
+    public List<PostImage> getImage() {
+        return images;
+    }
+
     @Column(nullable=false)
     private String title;
-    @Column(nullable=false, columnDefinition = "TEXT")
+    @Column(nullable=false)
     private String body;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable=false, columnDefinition = "INT(11) UNSIGNED")
     private Long id;
 
-    public Post() {
-
+    public PostDetails getPostDetails() {
+        return postDetails;
     }
-    public Post(String title, String body, Long id) {
-        this.title = title;
-        this.body = body;
-        this.id = id;
+
+    public User getUsers() {
+        return users;
+    }
+
+    public void setUsers(User users) {
+        this.users = users;
     }
 
     public Long getId() {
@@ -37,7 +57,24 @@ public class Post {
     public String getBody() {
         return this.body;
     }
-    public void setBody() {
+    public void setBody(String body) {
         this.body = body;
     }
+
+// CONSTRUCTORS
+
+    public Post() {
+    }
+
+    public Post(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
+
+    public Post(String title, String body, Long id) {
+        this.title = title;
+        this.body = body;
+        this.id = id;
+    }
+
 }
