@@ -1,6 +1,7 @@
 package com.codeup.springblog.Models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="posts")
@@ -8,10 +9,20 @@ public class Post {
 
     @OneToOne(mappedBy="post")
     private PostDetails postDetails;
-//
-//    @ManyToOne
-//    @JoinColumn(name="user_id", nullable=false)
-//    private User user;
+
+    @OneToMany(mappedBy="post")
+    private List<PostImage> images;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User users;
+
+
+
+
+    public List<PostImage> getImage() {
+        return images;
+    }
 
     @Column(nullable=false)
     private String title;
@@ -26,13 +37,12 @@ public class Post {
         return postDetails;
     }
 
-    public Post() {
-
+    public User getUsers() {
+        return users;
     }
-    public Post(String title, String body, Long id) {
-        this.title = title;
-        this.body = body;
-        this.id = id;
+
+    public void setUsers(User users) {
+        this.users = users;
     }
 
     public Long getId() {
@@ -51,4 +61,21 @@ public class Post {
     public void setBody() {
         this.body = body;
     }
+
+// CONSTRUCTORS
+
+    public Post() {
+    }
+
+    public Post(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
+
+    public Post(String title, String body, Long id) {
+        this.title = title;
+        this.body = body;
+        this.id = id;
+    }
+
 }

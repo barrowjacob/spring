@@ -1,5 +1,5 @@
 USE springblog_db;
 
 INSERT INTO users(email, username, password)
-VALUES ('sdf@sdf.com', 'sdf', 'sdsdfsdf'),
-       ('wer@wer.com', 'wer', 'werwerwer');
+VALUES ('jacob@gmail.com', 'jacobz', 'password'),
+       ('danger@hotmail.com', 'danger', 'passwordalso');

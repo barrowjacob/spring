@@ -1,12 +1,12 @@
 package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.Models.Post;
-import com.codeup.springblog.Models.postRepository;
+import com.codeup.springblog.Models.User;
+import com.codeup.springblog.Repositories.postRepository;
+import com.codeup.springblog.Repositories.userRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @Controller
 public class PostController {
@@ -16,10 +16,6 @@ public class PostController {
         return "posts/index";
     }
 
-//    @GetMapping(path = "/posts/show")
-//        public String post(Model model) {
-//        return "posts/show";
-//    }
 
     @GetMapping(path = "/posts/update")
     public String sendPostToUpdateForm(@RequestParam String postTitle,
@@ -65,9 +61,16 @@ public class PostController {
 
 
     @GetMapping("/posts/create")
-    @ResponseBody
-    public String create() {
-        return "view the form for creating a post";
+    public String create(Model model) {
+        return "posts/create";
+    }
+    @PostMapping("/posts/create")
+    public String create(Model model, @RequestParam String title, @RequestParam String body) {
+        Post post = new Post(title, body);
+        User user = userDao.getOne(1L);
+        post.setUsers(user);
+        postDao.save(post);
+        return "redirect:/posts/" + post.getId();
     }
 
 
@@ -77,10 +80,18 @@ public class PostController {
     }
 
     private final postRepository postDao;
+    private final userRepository userDao;
 
-    public PostController(postRepository postDao) {
+    public PostController(postRepository postDao, userRepository userDao) {
         this.postDao = postDao;
+        this.userDao = userDao;
     }
+    @GetMapping("/posts/{id}")
+    public String viewPost(@PathVariable long id, Model model) {
+        model.addAttribute("post", postDao.getOne(id));
+        return "posts/show";
+    }
+
 
 
     @GetMapping("/newtest")
@@ -90,5 +101,10 @@ public class PostController {
         return post.getPostDetails().getHistoryOfPost();
     }
 
+    @GetMapping("/images")
+    public String postImages(Model model) {
+        model.addAttribute("posts", postDao.getOne(1L).getImage());
+        return "cats/index";
+    }
 
 }

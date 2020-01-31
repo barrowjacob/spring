@@ -1,4 +1,3 @@
-
 USE springblog_db;
 INSERT INTO dogs (age, name, reside_state)
 VALUES
