@@ -19,9 +19,6 @@ public class User {
         this.posts = posts;
     }
 
-
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

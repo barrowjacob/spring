@@ -26,11 +26,10 @@ public class Post {
 
     @Column(nullable=false)
     private String title;
-    @Column(nullable=false, columnDefinition = "TEXT")
+    @Column(nullable=false)
     private String body;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable=false, columnDefinition = "INT(11) UNSIGNED")
     private Long id;
 
     public PostDetails getPostDetails() {
@@ -58,7 +57,7 @@ public class Post {
     public String getBody() {
         return this.body;
     }
-    public void setBody() {
+    public void setBody(String body) {
         this.body = body;
     }
 
