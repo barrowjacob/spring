@@ -4,6 +4,8 @@ import com.codeup.springblog.Models.Post;
 import com.codeup.springblog.Models.User;
 import com.codeup.springblog.Repositories.postRepository;
 import com.codeup.springblog.Repositories.userRepository;
+import com.codeup.springblog.Services.EmailService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +17,6 @@ public class PostController {
        model.addAttribute("posts", postDao.findAll());
         return "posts/index";
     }
-
-
 
     @GetMapping("/posts/{id}/delete")
     public String deletePost(@PathVariable long id) {
@@ -46,10 +46,11 @@ public class PostController {
 
     @PostMapping("/posts/create")
     public String create(@ModelAttribute Post post) {
-        System.out.println(post.getTitle());
-        System.out.println(post.getBody());
-        post.setUsers(userDao.getOne(1L));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        post.setUsers(user);
         postDao.save(post);
+        email.prepareAndSend(post, "you made a new post! " + post.getTitle(), "here's the body " + post.getBody());
         return "redirect:/posts";
     }
 
@@ -61,10 +62,11 @@ public class PostController {
 
     private final postRepository postDao;
     private final userRepository userDao;
-
-    public PostController(postRepository postDao, userRepository userDao) {
+    private final EmailService email;
+    public PostController(postRepository postDao, userRepository userDao, EmailService email) {
         this.postDao = postDao;
         this.userDao = userDao;
+        this.email = email;
     }
     @GetMapping("/posts/{id}")
     public String viewPost(@PathVariable long id, Model model) {

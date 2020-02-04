@@ -1,7 +1,7 @@
 package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.Models.Sandwich;
-import com.codeup.springblog.Models.sandwichRepository;
+import com.codeup.springblog.Repositories.sandwichRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
